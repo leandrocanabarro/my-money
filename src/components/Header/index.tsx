@@ -1,10 +1,9 @@
-import * as React from 'react'
-
 import { Container, Content, Logo } from './styles'
 
+import { HeaderProps } from 'types'
 import { ReactComponent as IconLogo } from 'assets/logo.svg'
 
-export function Header() {
+export function Header({ onOpenNewTransactionModal }: HeaderProps) {
   return (
     <Container>
       <Content>
@@ -13,7 +12,9 @@ export function Header() {
           Minha Grana
         </Logo>
 
-        <button type="button">Nova Transação</button>
+        <button type="button" onClick={onOpenNewTransactionModal}>
+          Nova Transação
+        </button>
       </Content>
     </Container>
   )
