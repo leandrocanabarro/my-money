@@ -1,16 +1,11 @@
 import * as React from 'react'
 
 import { Container } from './styles'
-import { api } from 'services/api'
-import { Transaction } from 'types'
 import { formattedCurrency, formattedDate } from 'utils'
+import { useTransactions } from 'hooks/useTransactions'
 
 export function Transactions() {
-  const [transactions, setTransactions] = React.useState<Transaction[]>([])
-
-  React.useEffect(() => {
-    api.get('transactions').then((response) => setTransactions(response.data.transactions))
-  }, [])
+  const { transactions } = useTransactions()
 
   return (
     <Container>
