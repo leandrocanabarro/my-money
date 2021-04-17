@@ -7,6 +7,7 @@ import { ReactComponent as IconIncome } from 'assets/income.svg'
 import { ReactComponent as IconOutcome } from 'assets/outcome.svg'
 import Modal from 'react-modal'
 import { NewTransactionModalProps } from 'types'
+import { api } from 'services/api'
 
 export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
   const [title, setTitle] = React.useState('')
@@ -17,10 +18,14 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
   function handleCreateNewTransaction(event: React.FormEvent) {
     event.preventDefault()
 
-    setTitle('')
-    setAmount(0)
-    setCategory('')
-    setType('deposit')
+    const data = {
+      title,
+      amount,
+      category,
+      type,
+    }
+
+    api.post('/transactions', data)
 
     onRequestClose()
   }

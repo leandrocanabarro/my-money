@@ -2,10 +2,14 @@ import * as React from 'react'
 
 import { Container } from './styles'
 import { api } from 'services/api'
+import { Transaction } from 'types'
+import { formattedCurrency, formattedDate } from 'utils'
 
 export function Transactions() {
+  const [transactions, setTransactions] = React.useState<Transaction[]>([])
+
   React.useEffect(() => {
-    api.get('transactions').then((response) => console.log(response.data))
+    api.get('transactions').then((response) => setTransactions(response.data.transactions))
   }, [])
 
   return (
@@ -20,18 +24,17 @@ export function Transactions() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Venda notebook</td>
-            <td className="deposit">R$ 4000,00</td>
-            <td>Receita</td>
-            <td>20/02/2021</td>
-          </tr>
-          <tr>
-            <td>Gasolina</td>
-            <td className="withdraw">- R$ 400,00</td>
-            <td>Despesa</td>
-            <td>12/01/2021</td>
-          </tr>
+          {transactions.map((transaction) => (
+            <tr key={transaction.id}>
+              <td>{transaction.title}</td>
+              <td className={transaction.type}>
+                {transaction.type === 'withdraw' ? '- ' : '+ '}
+                {formattedCurrency(transaction.amount)}
+              </td>
+              <td>{transaction.category}</td>
+              <td>{formattedDate(transaction.createdAt)}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </Container>
